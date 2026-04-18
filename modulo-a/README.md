@@ -11,8 +11,20 @@ POST /pedidos/posicional -> Parser valida e converte a string -> Service aplica 
 
 ## Decisões técnicas
 
-1. Fiz uso dos conceitos de arquitetura em camadas e adicionei a entidade Pedido, com os tipos de dados de acordo com o modelo enviado no case, usei
-2. a documentação oficial do Spring Boot para lembrar como declarar as annotations corretamente.
+### Entidade Pedido
+Mapeada conforme o banco do case. @CreationTimestamp com updatable=false para preencher criadoEm automaticamente e garantir
+que nunca seja alterado, já que não faz sentido com o dado que salva a data de criação do pedido. 
+StatusPedido foi implementado como enum com @Enumerated(EnumType.STRING) para salvar o valor legível no banco ao invés do índice referente
+ao valor do enum.
+
+### Parser
+Fatia a string nas posições fixas necessárias com substring() e aplica trim() nos campos alfanuméricos, removendo os espaços em branco.
+
+### Testes
+Testes unitários do PedidoParser:
+- String com 40 caracteres -> campos parseados corretamente
+- String sem 40 caracteres exatos -> exceção lançada
+- Quantidade fora do range 01-99 -> exceção lançada
 
 ## Como rodar
 

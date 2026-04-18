@@ -20,6 +20,12 @@ ao valor do enum.
 ### Parser
 Fatia a string nas posições fixas necessárias com substring() e aplica trim() nos campos alfanuméricos, removendo os espaços em branco.
 
+### Service
+Implementa lógica de processamento da String recebida e salva com os dados já processados no banco.
+Regras de negócio implementadas:
+- HAMBURGUER = R$ 20,00 | PASTEL = R$ 15,00 | Outros = R$ 12,00
+- Desconto de 10% quando HAMBURGUER + CARNE + SALADA
+
 ### Testes
 Testes unitários do PedidoParser:
 - String com 40 caracteres -> campos parseados corretamente

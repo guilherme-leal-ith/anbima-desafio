@@ -2,6 +2,7 @@ package com.anbima.modulo_a.service;
 
 import com.anbima.modulo_a.entity.Pedido;
 import com.anbima.modulo_a.entity.StatusPedido;
+import com.anbima.modulo_a.fila.FilaPedido;
 import com.anbima.modulo_a.parser.PedidoParser;
 import com.anbima.modulo_a.repository.PedidoRepository;
 import org.junit.jupiter.api.Test;
@@ -21,6 +22,9 @@ class PedidoServiceTest {
     // Uso do Mockito para simular a presenca das dependencias
     @Mock
     private PedidoRepository repository;
+
+    @Mock
+    private FilaPedido fila;
 
     @Mock
     private PedidoParser parser;

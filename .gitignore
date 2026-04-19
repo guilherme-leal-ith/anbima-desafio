@@ -23,6 +23,7 @@ logs/
 # IntelliJ
 .idea/
 *.iml
+curl
 
 # VSCode
 .vscode/

@@ -27,12 +27,16 @@ Implementa lógica de processamento da String recebida e salva com os dados já 
 
 ### Controller
 Expondo endpoint do recebimento do pedido
-- `consumes = "text/plain"` conforme especificado no case
-- `ResponseEntity<?>` permite retornar tipos diferentes: Pedido com HTTP 201 em caso de sucesso, ou mensagem de erro com HTTP 400 em caso de validação inválida
+- consumes = "text/plain" conforme especificado no case
+- ResponseEntity<?> permite retornar tipos diferentes: Pedido com HTTP 201 em caso de sucesso, ou mensagem de erro com HTTP 400 em caso de validação inválida
 - Erros lançados pelo parser são capturados e devolvidos como 400 com mensagem legível ao invés de estourar um 500
+
+### H2
+Inicialmente usei H2 em memória jdbc:h2:mem por ser simples de configurar. Durante o desenvolvimento do Módulo B identifiquei um problema: H2 em memória só existe dentro do processo que o criou, então o Módulo B não conseguia acessar o banco do Módulo A, logo pesquisei e migrei para H2 em modo arquivo com AUTO_SERVER=TRUE, que permite múltiplas conexões simultâneas ao mesmo arquivo
 
 ### Fila em memória
 Ao estudar o case identifiquei que a comunicação entre os módulos precisava ser assíncrona, em outras palavras: o Módulo A não deveria esperar o Módulo B processar para retornar a resposta. Pesquisei sobre esse padrão e cheguei no conceito de message broker, e dentro do  Spring o RabbitMQ via Spring AMQP é a solução padrão.
+
 Com isso em vista, para o MVP optei por implementar uma fila em memória com a mesma funcionalidade (publicar/consumir) que o RabbitMQ teria. Essa decisão foi consciente por dois motivos:
 1. Permitiu criar o fluxo completo sem dependência de infraestrutura externa
 2. A classe FilaPedido está isolada em pacote próprio, a troca por RabbitMQ não afeta o PedidoService, só a implementação da fila, já que quis criar um código limpo.
@@ -40,7 +44,7 @@ Com isso em vista, para o MVP optei por implementar uma fila em memória com a m
 Porém identifiquei um problema: o Módulo A e o Módulo B são processos separados, assim a fila em memória, do Módulo A não é 
 acessível pelo Módulo B. Tendo em vista que com RabbitMQ isso seria resolvido naturalmente, já que o Modulo A publicaria na fila do broker e o Módulo B consumiria com o Listener, resolvi que para o MVP o Módulo B iria consultar o banco periodicamente com @Scheduled, buscando
 pedidos com status = RECEBIDO e os atualizando para ENTREGUE, descobri como fazer essa solução através do post do StackOverflow:
-Como agendar várias tarefas no spring boot de forma dinamica? (não quis arriscar botar link)
+Como agendar várias tarefas no spring boot de forma dinamica?
 
 ## Evidências
 
@@ -71,8 +75,8 @@ Temos que dentro do método da fila 'publicar(Long pedidoId)' temo 'System.out.p
 ## Como rodar
 
 1. Roda a aplicação
-2. Acessa o H2 Console disponível em: "localhost:8080/h2-console"
-3. insere em JDBC URL: jdbc:h2:mem:pedidosdb
+2. H2 Console: localhost:8080/h2-console
+3. JDBC URL: jdbc:h2:file:./pedidosdb
 
 ## Melhorias e refatorações planejadas
 

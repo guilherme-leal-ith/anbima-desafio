@@ -33,6 +33,17 @@ Expondo endpoint do recebimento do pedido
 - `ResponseEntity<?>` permite retornar tipos diferentes: Pedido com HTTP 201 em caso de sucesso, ou mensagem de erro com HTTP 400 em caso de validação inválida
 - Erros lançados pelo parser são capturados e devolvidos como 400 com mensagem legível ao invés de estourar um 500
 
+### Fila em memória
+Ao estudar o case identifiquei que a comunicação entre os módulos precisava ser assíncrona, em outras palavras: o Módulo A não deveria esperar o Módulo B processar para retornar a resposta. Pesquisei sobre esse padrão e cheguei no conceito de message broker, e dentro do  Spring o RabbitMQ via Spring AMQP é a solução padrão.
+Com isso em vista, para o MVP optei por implementar uma fila em memória com a mesma funcionalidade (publicar/consumir) que o RabbitMQ teria. Essa decisão foi consciente por dois motivos:
+1. Permitiu criar o fluxo completo sem dependência de infraestrutura externa
+2. A classe FilaPedido está isolada em pacote próprio, a troca por RabbitMQ não afeta o PedidoService, só a implementação da fila, já que quis criar um código limpo.
+
+Porém identifiquei um problema: o Módulo A e o Módulo B são processos separados, assim a fila em memória (H2) do Módulo A não é 
+acessível pelo Módulo B. Tendo em vista que com RabbitMQ isso seria resolvido naturalmente, já que o Modulo A publicaria na fila do broker e o Módulo B consumiria com o Listener, resolvi que para o MVP o Módulo B iria consultar o banco periodicamente com @Scheduled, buscando
+pedidos com status = RECEBIDO e os atualizando para ENTREGUE, descobri como fazer essa solução através do post do StackOverflow:
+Como agendar várias tarefas no spring boot de forma dinamica? (não quis arriscar botar link)
+
 ## Testes unitários
 
 ### PedidoParser
@@ -46,21 +57,12 @@ Expondo endpoint do recebimento do pedido
 - Cálculo sem desconto (PASTEL + FRANGO + BACON, 2 unid) → R$ 30,00
 - Status definido como RECEBIDO em ambos os casos
 - Parser e repository isolados com Mockito para testar só a lógica do service
+<img width="1162" height="266" alt="image" src="https://github.com/user-attachments/assets/4c540fb8-c2d2-46fb-967a-e07c8a01cc9a" />
+
 
 ### Controller
 Uso do cURL para enviar HTTP Request
 <img width="1059" height="101" alt="image" src="https://github.com/user-attachments/assets/cdefdf82-3148-4655-8082-770d44e97a41" />
-
-### Fila em memória
-Ao estudar o case identifiquei que a comunicação entre os módulos precisava ser assíncrona, em outras palavras: o Módulo A não deveria esperar o Módulo B processar para retornar a resposta. Pesquisei sobre esse padrão e cheguei no conceito de message broker, e dentro do  Spring o RabbitMQ via Spring AMQP é a solução padrão.
-Com isso em vista, para o MVP optei por implementar uma fila em memória com a mesma funcionalidade (publicar/consumir) que o RabbitMQ teria. Essa decisão foi consciente por dois motivos:
-1. Permitiu criar o fluxo completo sem dependência de infraestrutura externa
-2. A classe FilaPedido está isolada em pacote próprio, a troca por RabbitMQ não afeta o PedidoService, só a implementação da fila, já que quis criar um código limpo.
-3. 
-Porém identifiquei um problema: o Módulo A e o Módulo B são processos separados, assim a fila em memória (H2) do Módulo A não é 
-acessível pelo Módulo B. Tendo em vista que com RabbitMQ isso seria resolvido naturalmente, já que o Modulo A publicaria na fila do broker e o Módulo B consumiria com o Listener, resolvi que para o MVP o Módulo B iria consultar o banco periodicamente com @Scheduled, buscando
-pedidos com status = RECEBIDO e os atualizando para ENTREGUE, descobri como fazer essa solução através do post do StackOverflow:
-Como agendar várias tarefas no spring boot de forma dinamica? (não quis arriscar botar link)
 
 ## Como rodar
 

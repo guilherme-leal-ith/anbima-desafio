@@ -26,11 +26,19 @@ Regras de negócio implementadas:
 - HAMBURGUER = R$ 20,00 | PASTEL = R$ 15,00 | Outros = R$ 12,00
 - Desconto de 10% quando HAMBURGUER + CARNE + SALADA
 
-### Testes
-Testes unitários do PedidoParser:
-- String com 40 caracteres -> campos parseados corretamente
-- String sem 40 caracteres exatos -> exceção lançada
-- Quantidade fora do range 01-99 -> exceção lançada
+## Testes unitários
+
+### PedidoParser
+- String com 40 caracteres → campos parseados corretamente
+- String sem 40 caracteres exatos → exceção lançada
+- Quantidade fora do range 01-99 → exceção lançada
+
+### PedidoService
+- Cálculo com desconto (HAMBURGUER + CARNE + SALADA, 1 unid) → R$ 18,00
+- Cálculo sem desconto (PASTEL + FRANGO + BACON, 2 unid) → R$ 30,00
+- Status definido como RECEBIDO em ambos os casos
+- Parser e repository isolados com Mockito para testar só a lógica do service
+- assertTrue ao invés de assertEquals no valor para contornar o problema de casas decimais do BigDecimal
 
 ## Como rodar
 

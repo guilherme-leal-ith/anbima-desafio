@@ -22,8 +22,6 @@ Fatia a string nas posições fixas necessárias com substring() e aplica trim()
 
 ### Service
 Implementa lógica de processamento da String recebida e salva com os dados já processados no banco.
-- assertTrue com compareTo ao invés de assertEquals no valor para contornar o problema de casas decimais do BigDecimal
-Regras de negócio implementadas:
 - HAMBURGUER = R$ 20,00 | PASTEL = R$ 15,00 | Outros = R$ 12,00
 - Desconto de 10% quando HAMBURGUER + CARNE + SALADA
 
@@ -39,10 +37,20 @@ Com isso em vista, para o MVP optei por implementar uma fila em memória com a m
 1. Permitiu criar o fluxo completo sem dependência de infraestrutura externa
 2. A classe FilaPedido está isolada em pacote próprio, a troca por RabbitMQ não afeta o PedidoService, só a implementação da fila, já que quis criar um código limpo.
 
-Porém identifiquei um problema: o Módulo A e o Módulo B são processos separados, assim a fila em memória (H2) do Módulo A não é 
+Porém identifiquei um problema: o Módulo A e o Módulo B são processos separados, assim a fila em memória, do Módulo A não é 
 acessível pelo Módulo B. Tendo em vista que com RabbitMQ isso seria resolvido naturalmente, já que o Modulo A publicaria na fila do broker e o Módulo B consumiria com o Listener, resolvi que para o MVP o Módulo B iria consultar o banco periodicamente com @Scheduled, buscando
 pedidos com status = RECEBIDO e os atualizando para ENTREGUE, descobri como fazer essa solução através do post do StackOverflow:
 Como agendar várias tarefas no spring boot de forma dinamica? (não quis arriscar botar link)
+
+## Evidências
+
+### Controller
+Uso do cURL para enviar HTTP Request
+<img width="1059" height="101" alt="image" src="https://github.com/user-attachments/assets/cdefdf82-3148-4655-8082-770d44e97a41" />
+
+### Fila
+Temos que dentro do método da fila 'publicar(Long pedidoId)' temo 'System.out.println("Publicado na fila: pedidoId=" + pedidoId)' e ao mandar um cURL percebemos a resposta
+<img width="481" height="301" alt="image" src="https://github.com/user-attachments/assets/6ad178a7-93a2-4f60-8454-ca3dc0d563ca" />
 
 ## Testes unitários
 
@@ -57,12 +65,8 @@ Como agendar várias tarefas no spring boot de forma dinamica? (não quis arrisc
 - Cálculo sem desconto (PASTEL + FRANGO + BACON, 2 unid) → R$ 30,00
 - Status definido como RECEBIDO em ambos os casos
 - Parser e repository isolados com Mockito para testar só a lógica do service
+- assertTrue com compareTo ao invés de assertEquals no valor para contornar o problema de casas decimais do BigDecimal
 <img width="1162" height="266" alt="image" src="https://github.com/user-attachments/assets/4c540fb8-c2d2-46fb-967a-e07c8a01cc9a" />
-
-
-### Controller
-Uso do cURL para enviar HTTP Request
-<img width="1059" height="101" alt="image" src="https://github.com/user-attachments/assets/cdefdf82-3148-4655-8082-770d44e97a41" />
 
 ## Como rodar
 

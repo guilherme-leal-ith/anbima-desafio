@@ -26,6 +26,12 @@ Regras de negócio implementadas:
 - HAMBURGUER = R$ 20,00 | PASTEL = R$ 15,00 | Outros = R$ 12,00
 - Desconto de 10% quando HAMBURGUER + CARNE + SALADA
 
+### Controller
+Expondo endpoint do recebimento do pedido
+- `consumes = "text/plain"` conforme especificado no case.
+- `ResponseEntity<?>` permite retornar tipos diferentes: Pedido com HTTP 201 em caso de sucesso, ou mensagem de erro com HTTP 400 em caso de validação inválida.
+- Erros lançados pelo parser são capturados e devolvidos como 400 com mensagem legível ao invés de estourar um 500.
+
 ## Testes unitários
 
 ### PedidoParser
@@ -38,10 +44,22 @@ Regras de negócio implementadas:
 - Cálculo sem desconto (PASTEL + FRANGO + BACON, 2 unid) → R$ 30,00
 - Status definido como RECEBIDO em ambos os casos
 - Parser e repository isolados com Mockito para testar só a lógica do service
-- assertTrue ao invés de assertEquals no valor para contornar o problema de casas decimais do BigDecimal
+- assertTrue com compareTo ao invés de assertEquals no valor para contornar o problema de casas decimais do BigDecimal
+
+### Controller
+Uso do cURL para enviar HTTP Request
+<img width="1059" height="101" alt="image" src="https://github.com/user-attachments/assets/cdefdf82-3148-4655-8082-770d44e97a41" />
 
 ## Como rodar
 
 1. Roda a aplicação
 2. Acessa o H2 Console disponível em: "localhost:8080/h2-console"
 3. insere em JDBC URL: jdbc:h2:mem:pedidosdb
+
+## Melhorias e refatorações planejadas
+
+- Validação da quantidade: Campo numérico deve rejeitar " 1" ou "1 "
+- Casas decimais do valor: retornar sempre com 2 casas decimais
+- PostgreSQL: migrar do H2 para PostgreSQL
+- Swagger: já trabalhei com Swagger anteriormente e seria interessante para automatizar a documentação e tests dos endpoints
+- Tratamento de erros global: Centralizar o tratamento de exceções ao invés de try/catch no controller

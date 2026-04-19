@@ -17,6 +17,17 @@ Ao receber o case meu processo foi:
 
 ---
 
+## Sobre o histórico de commits
+
+Optei por commits pequenos e incrementais seguindo o padrão Conventional Commits, para padronizar e deixar o histórico legível.
+
+A quantidade de commits foi intencional, quis deixar claro o progresso e o raciocínio por trás de cada decisão, já que o case pede exatamente isso. Cada commit representa uma etapa ou decisão concluída.
+
+Quis que os commits seguissem um padrão profissional, então fiz assim:
+branch por feature → commits incrementais → PR com descrição → merge na main
+
+---
+
 ## Decisões técnicas
 
 ### .gitignore
@@ -24,11 +35,10 @@ Analisei e pesquisei cuidadosamente o que não deveria ser enviado para o repo. 
 
 ## Banco de dados
 Escolhi o PostgrSQL, por ser robusto, muito utilizado no mercado e adequado ao schema definido no desafio. Para a criação do MVP dos módulos, vou usar o H2, para facilitar a resolver o essencial, já que é mais simples configurar o H2.
+Durante o desenvolvimento do Módulo B identifiquei um problema: H2 em memória só existe dentro do processo que o criou, então o Módulo B não conseguia acessar o banco do Módulo A. Resolvi migrando para H2 em modo arquivo com várias conexões ao mesmo o tempo para o mesmo arquivo.
 
 ## Fila e mensageria
 Fui atrás de entender melhor sobre a mensageria no sistema, li um post sobre mensagens assíncronas no stackoverflow e vi um vídeo no youtube sobre mensageria em Spring Boot. Compreendi que o correto seria usar um Message Broker, foi ai que cheguei no RabbitMQ que é a solução padrão do ecossistema Spring. Para o MVP vou implementar um fila em memória que publica/consome, igual o RabbitMq teria. Posteriormente, refatorar para RabbitMQ, sendo uma solução mais profissional.
-Para o MVP implementei uma fila em memória com a mesma interface (publicar/consumir) que o RabbitMQ teria. Posteriormente pretendo
-refatorar para RabbitMQ.
 
 ---
 

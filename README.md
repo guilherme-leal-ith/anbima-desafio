@@ -24,7 +24,7 @@ Optei por commits pequenos e incrementais seguindo o padrão Conventional Commit
 A quantidade de commits foi intencional, quis deixar claro o progresso e o raciocínio por trás de cada decisão, já que o case pede exatamente isso. Cada commit representa uma etapa ou decisão concluída.
 
 Quis que os commits seguissem um padrão profissional, então fiz assim:
-branch por feature → commits incrementais → PR com descrição → merge na main
+branch por feature -> commits incrementais -> PR com descrição -> merge na main
 
 ---
 
@@ -35,6 +35,7 @@ Analisei e pesquisei cuidadosamente o que não deveria ser enviado para o repo. 
 
 ## Banco de dados
 Escolhi o PostgrSQL, por ser robusto, muito utilizado no mercado e adequado ao schema definido no desafio. Para a criação do MVP dos módulos, vou usar o H2, para facilitar a resolver o essencial, já que é mais simples configurar o H2.
+
 Durante o desenvolvimento do Módulo B identifiquei um problema: H2 em memória só existe dentro do processo que o criou, então o Módulo B não conseguia acessar o banco do Módulo A. Resolvi migrando para H2 em modo arquivo com várias conexões ao mesmo o tempo para o mesmo arquivo.
 
 ## Fila e mensageria
@@ -44,10 +45,10 @@ Fui atrás de entender melhor sobre a mensageria no sistema, li um post sobre me
 
 ## Estado atual
 
-### Módulo A — concluído
+### Módulo A - concluído
 Fluxo completo funcionando: POST /pedidos/posicional -> Parser -> Service -> Banco -> Fila -> 201
 
-### Módulo B — em andamento
+### Módulo B - em andamento
 Consumidor da fila e endpoints de consulta.
 
 ### Frontend - não comecei

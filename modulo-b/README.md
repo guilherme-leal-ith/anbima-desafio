@@ -22,6 +22,10 @@ tabela compartilhada.
 - O case pede um listener da fila 'pedidos.recebidos', no MVP usei @Scheduled que consulta o banco a cada 3 segundos buscando pedidos RECEBIDOS, dessa forma simulando o comportamento do listener.
 - Logo, de 3 em 3 segundos é checado se possui pedidos com o status=RECEBIDO, caso tenha eles são atualizados para status=ENTREGUE
 
+### Controller
+- GET /pedidos -> lista todos os pedidos
+- GET /pedidos/{id} -> consulta pedido específico, fiz que retornasse 404 se o id não for encontrado, ao invés de um erro 500, que só indica que houve um erro interno do servidor
+
 ## Evidências
 
 ### Scheduler + Service
@@ -37,3 +41,14 @@ Após subir o Módulo B com um pedido RECEBIDO no banco, o scheduler executa aut
 Confirmação via H2 Console que o status foi persistido como ENTREGUE:
 <img width="975" height="263" alt="image" src="https://github.com/user-attachments/assets/5aae5c5b-2238-45ea-9d4a-c2f283f54361" />
 
+### Controller
+O banco possui 2 pedidos: <img width="758" height="107" alt="image" src="https://github.com/user-attachments/assets/ef28a107-e672-445d-8b6e-49ca838c6a59" />
+
+- Testa o retorno de todos os pedidos, já que é GET podemos acessar via localhost:8081/pedidos:
+<img width="1333" height="162" alt="image" src="https://github.com/user-attachments/assets/4caafdd3-6b2a-437c-81d3-f48b2eb57b49" />
+
+- Testa o retorno de pedido específico (nesse caso o de id 4), já que é GET podemos acessar via localhost:8081/pedidos/4
+<img width="1332" height="144" alt="image" src="https://github.com/user-attachments/assets/467c8246-c3b3-4b5d-b701-0c4a8d084d3d" />
+
+- Testa o retorno do erro 404, ao acessar o localhost:8081/pedidos/10
+<img width="611" height="244" alt="image" src="https://github.com/user-attachments/assets/e55df5cd-d166-4221-b128-e054c32529c0" />

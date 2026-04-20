@@ -8,7 +8,7 @@ ProcessadorPedidos (@Scheduled a cada 3s) -> Busca todos os pedidos com status R
 ## Decisões técnicas
 
 ### Entidade Pedido e enum StatusPedido
-Cópia do Módulo A, já que módulos separados não compartilham código no MVP. O mapeamento é igual a fim de garantir compatibilidade com a 
+- Cópia do Módulo A, já que módulos separados não compartilham código no MVP. O mapeamento é igual a fim de garantir compatibilidade com a 
 tabela compartilhada.
 
 ### Repository

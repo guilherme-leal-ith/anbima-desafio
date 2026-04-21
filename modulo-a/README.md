@@ -46,6 +46,9 @@ acessível pelo Módulo B. Tendo em vista que com RabbitMQ isso seria resolvido 
 pedidos com status = RECEBIDO e os atualizando para ENTREGUE, descobri como fazer essa solução através do post do StackOverflow:
 Como agendar várias tarefas no spring boot de forma dinamica?
 
+### CORS
+Configurei o CorsConfig para permitir requisições do frontend (localhost:4200). Sem essa configuração o browser bloqueia as chamadas identifiquei o erro no console do browser e pesquisei a solução.
+
 ## Evidências
 
 ### Controller

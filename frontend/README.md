@@ -21,3 +21,6 @@ Validação de 40 chars feita no frontend antes de chamar a API, já pensando em
 
 ### Navegação
 Navegação simples entre telas via botões sem roteador. Uso do @if ao invés de *ngIf conforme pesquisei e é recomendado no Angular 21.
+
+### Tela Pedidos
+Filtro por status implementado no frontend via getter para evitar chamada extra de endpoint. Usei o que ngOnInit carrega os pedidos automaticamente ao abrir a tela. O valor é formatado com 'number' do Angular.

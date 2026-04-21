@@ -24,3 +24,13 @@ Navegação simples entre telas via botões sem roteador. Uso do @if ao invés d
 
 ### Tela Pedidos
 Filtro por status implementado no frontend via getter para evitar chamada extra de endpoint. Usei o que ngOnInit carrega os pedidos automaticamente ao abrir a tela. O valor é formatado com 'number' do Angular.
+
+### main.ts
+Corrigido o bootstrap para usar 'AppComponent' ao invés do componente padrão gerado pelo CLI quando eu criei o projeto
+
+## Como rodar
+
+npm install -> para instalar os pacotes
+ng serve -> para rodar a aplicação
+
+Acesse em http://localhost:4200. Os Módulos A (8080) e B (8081) precisam estar rodando.

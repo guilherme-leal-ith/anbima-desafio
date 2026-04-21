@@ -15,3 +15,6 @@ Angular segue a mesma ideia de dividir a interface em componentes reutilizáveis
 
 ### PedidoService
 Camada de comunicação com os backends. Implementei enviarPosicional() que chama o Módulo A com Content-Type: text/plain, conforme especificado no case. Também implementei listarPedidos(), que chama o Módulo B para buscar todos os pedidos.
+
+### Tela Novo Pedido
+Validação de 40 chars feita no frontend antes de chamar a API, já pensando em evitar sobrecarga do backend com dados inválidos. Também quis fazer um Contador de caracteres em tempo real para facilitar a visualização do avaliador.

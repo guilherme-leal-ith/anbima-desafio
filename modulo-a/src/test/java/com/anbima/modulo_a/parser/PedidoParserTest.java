@@ -51,4 +51,20 @@ class PedidoParserTest {
                 () -> parser.parsearString("HAMBURGUER CARNE     SALADA    100COCA   ")
         );
     }
+
+    @Test
+    void deveLancarExcecaoQuandoStringNula() {
+        // Verifica se o parser rejeita null explicitamente
+        assertThrows(IllegalArgumentException.class,
+                () -> parser.parsearString(null)
+        );
+    }
+
+    @Test
+    void deveLancarExcecaoQuandoStringMaiorQue40() {
+        // Verifica se o parser rejeita String com mais de 40 caracteres
+        assertThrows(IllegalArgumentException.class,
+                () -> parser.parsearString("HAMBURGUER" + "CARNE     " + "SALADA    " + "01" + "COCA     ")
+        );
+    }
 }

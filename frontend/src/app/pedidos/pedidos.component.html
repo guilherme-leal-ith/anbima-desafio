@@ -1,0 +1,39 @@
+<div class="container">
+  <h2>Pedidos</h2>
+
+  <div>
+    <select [(ngModel)]="filtro">
+      <option value="">Todos</option>
+      <option value="RECEBIDO">RECEBIDO</option>
+      <option value="ENTREGUE">ENTREGUE</option>
+    </select>
+    <button (click)="carregar()">Atualizar</button>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Tipo Lanche</th>
+        <th>Proteína</th>
+        <th>Acompanhamento</th>
+        <th>Quantidade</th>
+        <th>Bebida</th>
+        <th>Valor</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let p of pedidosFiltrados">
+        <td>{{ p.id }}</td>
+        <td>{{ p.tipoLanche }}</td>
+        <td>{{ p.proteina }}</td>
+        <td>{{ p.acompanhamento }}</td>
+        <td>{{ p.quantidade }}</td>
+        <td>{{ p.bebida }}</td>
+        <td>R$ {{ p.valor | number:'1.2-2' }}</td>
+        <td>{{ p.status }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

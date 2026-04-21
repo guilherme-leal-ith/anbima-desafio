@@ -1,0 +1,12 @@
+<nav>
+  <button (click)="tela = 'novo-pedido'">Novo Pedido</button>
+  <button (click)="tela = 'pedidos'">Pedidos</button>
+</nav>
+
+@if (tela === 'novo-pedido') {
+  <app-novo-pedido></app-novo-pedido>
+}
+
+@if (tela === 'pedidos') {
+  <app-pedidos></app-pedidos>
+}

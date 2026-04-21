@@ -46,10 +46,12 @@ Fui atrás de entender melhor sobre a mensageria no sistema, li um post sobre me
 ## Estado atual
 
 ### Módulo A - concluído
-Fluxo completo funcionando: POST /pedidos/posicional -> Parser -> Service -> Banco -> Fila -> 201
+Fluxo completo funcionando:
+POST /pedidos/posicional → Parser → Service → Banco → Fila → 201
 
-### Módulo B - em andamento
-Consumidor da fila e endpoints de consulta.
+### Módulo B - concluíso
+Scheduler consome pedidos RECEBIDOS e atualiza para ENTREGUE.
+GET /pedidos e GET /pedidos/{id} funcionando.
 
-### Frontend - não comecei
-A ser implementado após o Módulo B.
+### Frontend — em andamento
+Telas de Novo Pedido e listagem de Pedidos.

@@ -52,3 +52,12 @@ O banco possui 2 pedidos: <img width="758" height="107" alt="image" src="https:/
 
 - Testa o retorno do erro 404, ao acessar o localhost:8081/pedidos/10
 <img width="611" height="244" alt="image" src="https://github.com/user-attachments/assets/e55df5cd-d166-4221-b128-e054c32529c0" />
+
+## Testes unitários
+
+### EntregaService
+- Pedido RECEBIDO -> atualizado para ENTREGUE e salvo
+- Nenhum pedido RECEBIDO -> save não é chamado
+- Pedido não encontrado -> exceção lançada
+
+<img width="538" height="216" alt="image" src="https://github.com/user-attachments/assets/e5c6898e-8ec7-4793-baff-e305f7414345" />

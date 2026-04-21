@@ -1,0 +1,24 @@
+<div class="container">
+  <h2>Novo Pedido</h2>
+
+  <div>
+    <label>String Posicional (40 caracteres)</label>
+    <textarea
+      [(ngModel)]="linha"
+      rows="3"
+      placeholder="Cole a string posicional aqui...">
+    </textarea>
+    <small>Caracteres: {{ linha.length }}/40</small>
+  </div>
+
+  <button (click)="enviar()">Enviar</button>
+
+  <div *ngIf="erro" style="color: red">
+    {{ erro }}
+  </div>
+
+  <div *ngIf="resultado">
+    <h3>Pedido criado com sucesso!</h3>
+    <pre>{{ resultado | json }}</pre>
+  </div>
+</div>

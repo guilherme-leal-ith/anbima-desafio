@@ -18,3 +18,6 @@ Camada de comunicação com os backends. Implementei enviarPosicional() que cham
 
 ### Tela Novo Pedido
 Validação de 40 chars feita no frontend antes de chamar a API, já pensando em evitar sobrecarga do backend com dados inválidos. Também quis fazer um Contador de caracteres em tempo real para facilitar a visualização do avaliador.
+
+### Navegação
+Navegação simples entre telas via botões sem roteador. Uso do @if ao invés de *ngIf conforme pesquisei e é recomendado no Angular 21.

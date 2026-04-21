@@ -26,6 +26,10 @@ tabela compartilhada.
 - GET /pedidos -> lista todos os pedidos
 - GET /pedidos/{id} -> consulta pedido específico, fiz que retornasse 404 se o id não for encontrado, ao invés de um erro 500, que só indica que houve um erro interno do servidor
 
+### CORS
+Configurei o CorsConfig para permitir requisições do frontend (localhost:4200). Sem essa configuração o browser bloqueia as chamadas identifiquei o erro no console do browser e pesquisei a solução.
+
+
 ## Evidências
 
 ### Scheduler + Service

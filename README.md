@@ -88,21 +88,25 @@ Tela Novo Pedido e tela Pedidos com filtro por status funcionando.
 
 ## Como rodar
 
-### Módulo A
+### Primeiro passo - PostgreSQL
+Subir banco de dados via docker, dentro da pasta raíz:
+1. docker-compose up -d
+
+### Segundo passo - Módulo A
 
 Dentro da pasta modulo-a
 - mvn spring-boot:run - roda a aplicação
 
 Porta: 8080
 
-### Módulo B
+### Terceiro passo - Módulo B
 
 Dentro da pasta modulo-b
 - mvn spring-boot:run - roda a aplicação
 
 Porta: 8081
 
-### Frontend
+### Quarto passo - Frontend
 
 Dentro da pasta frontend
 - npm install - baixa os pacotes

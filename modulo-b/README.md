@@ -29,6 +29,10 @@ tabela compartilhada.
 ### CORS
 Configurei o CorsConfig para permitir requisições do frontend (localhost:4200). Sem essa configuração o browser bloqueia as chamadas identifiquei o erro no console do browser e pesquisei a solução.
 
+### Banco de dados
+Compartilha o mesmo PostgreSQL do Módulo A via Docker Compose. A leitura dos pedidos persistidos pelo Módulo A funciona corretamente
+pois ambos apontam para a mesma instância e banco. Preferi não mudar as evidências feitas usando H2, pois o H2 ajuda a visualizar e a lógica por trás da persistência não mudou.
+
 ## Evidências
 
 ### Scheduler + Service

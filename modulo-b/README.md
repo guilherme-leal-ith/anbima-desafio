@@ -29,7 +29,6 @@ tabela compartilhada.
 ### CORS
 Configurei o CorsConfig para permitir requisições do frontend (localhost:4200). Sem essa configuração o browser bloqueia as chamadas identifiquei o erro no console do browser e pesquisei a solução.
 
-
 ## Evidências
 
 ### Scheduler + Service
@@ -63,5 +62,16 @@ O banco possui 2 pedidos: <img width="758" height="107" alt="image" src="https:/
 - Pedido RECEBIDO -> atualizado para ENTREGUE e salvo
 - Nenhum pedido RECEBIDO -> save não é chamado
 - Pedido não encontrado -> exceção lançada
+- Todos os pedidos listados -> findAll() chamado e lista retornada corretamente
+- Pedido encontrado por id -> campos retornados corretamente
+<img width="630" height="286" alt="image" src="https://github.com/user-attachments/assets/31779666-7111-47a6-9cf2-29601c6ba478" />
 
-<img width="538" height="216" alt="image" src="https://github.com/user-attachments/assets/e5c6898e-8ec7-4793-baff-e305f7414345" />
+## Como rodar
+
+Rodar aplicação
+1. Dentro da pasta modulo-b
+2. mvn spring-boot:run - roda a aplicação
+
+Rodar testes
+1. Dentro da pasta modulo-b
+2. mvn test - roda os testes

@@ -11,9 +11,9 @@ Ao receber o case meu processo foi:
   - Front
 3. **Prorizando**: Como o foco da avaliação é o backend, conforme foi alinhado na vaga e na entrevista, priorizei assim
     - Módulo A completo e testado - Concluído
-    - Módulo B completo e testado - Em andamento
-    - Testes unitários
-    - Frontent
+    - Módulo B completo e testado - Concluído
+    - Testes unitários - Concluído
+    - Frontent - Concluído
 
 ---
 

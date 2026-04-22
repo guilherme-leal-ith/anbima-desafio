@@ -11,7 +11,7 @@ POST /pedidos/posicional -> Parser valida e converte a string -> Service aplica 
 ## Decisões técnicas
 
 ### Entidade Pedido
-Mapeada conforme o banco do case. @CreationTimestamp com updatable=false para preencher criadoEm automaticamente e garantir
+Mapeada conforme o  do case. @CreationTimestamp com updatable=false para preencher criadoEm automaticamente e garantir
 que nunca seja alterado, já que não faz sentido com o dado que salva a data de criação do pedido. 
 StatusPedido foi implementado como enum com @Enumerated(EnumType.STRING) para salvar o valor legível no banco ao invés do índice referente
 ao valor do enum.
@@ -30,8 +30,9 @@ Expondo endpoint do recebimento do pedido
 - ResponseEntity<?> permite retornar tipos diferentes: Pedido com HTTP 201 em caso de sucesso, ou mensagem de erro com HTTP 400 em caso de validação inválida
 - Erros lançados pelo parser são capturados e devolvidos como 400 com mensagem legível ao invés de estourar um 500
 
-### H2
-Inicialmente usei H2 em memória jdbc:h2:mem por ser simples de configurar. Durante o desenvolvimento do Módulo B identifiquei um problema: H2 em memória só existe dentro do processo que o criou, então o Módulo B não conseguia acessar o banco do Módulo A, logo pesquisei e migrei para H2 em modo arquivo com AUTO_SERVER=TRUE, que permite múltiplas conexões simultâneas ao mesmo arquivo
+### Banco de dados
+Migrado do H2 para PostgreSQL. O banco sobe via Docker Compose na raiz do projeto.
+A tabela é criada automaticamente pelo Hibernate via ddl-auto=update.
 
 ### Fila em memória
 Ao estudar o case identifiquei que a comunicação entre os módulos precisava ser assíncrona, em outras palavras: o Módulo A não deveria esperar o Módulo B processar para retornar a resposta. Pesquisei sobre esse padrão e cheguei no conceito de message broker, e dentro do  Spring o RabbitMQ via Spring AMQP é a solução padrão.
@@ -80,11 +81,6 @@ Temos que dentro do método da fila 'publicar(Long pedidoId)' temo 'System.out.p
 
 ## Como rodar
 
-Acessar banco de dados:
-1. Roda a aplicação
-2. H2 Console: localhost:8080/h2-console
-3. JDBC URL: jdbc:h2:file:./pedidosdb
-
 Rodar aplicação
 1. Dentro da pasta modulo-a
 2. mvn spring-boot:run - roda a aplicação
@@ -96,6 +92,5 @@ Rodar testes
 ## Melhorias e refatorações planejadas
 
 - Casas decimais do valor: retornar sempre com 2 casas decimais
-- PostgreSQL: migrar do H2 para PostgreSQL
 - Swagger: já trabalhei com Swagger anteriormente e seria interessante para automatizar a documentação e tests dos endpoints
 - Tratamento de erros global: Centralizar o tratamento de exceções ao invés de try/catch no controller

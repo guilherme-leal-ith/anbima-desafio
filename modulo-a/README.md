@@ -1,7 +1,6 @@
 # Módulo A — Entrada/Gateway
 
-Ele que recebe a string posicional, valida, converte,
-calcula o valor e persiste o pedido no banco.
+Ele que recebe a string posicional, valida, converte, calcula o valor e persiste o pedido no banco.
 
 ## Fluxo
 
@@ -46,6 +45,9 @@ acessível pelo Módulo B. Tendo em vista que com RabbitMQ isso seria resolvido 
 pedidos com status = RECEBIDO e os atualizando para ENTREGUE, descobri como fazer essa solução através do post do StackOverflow:
 Como agendar várias tarefas no spring boot de forma dinamica?
 
+### CORS
+Configurei o CorsConfig para permitir requisições do frontend (localhost:4200). Sem essa configuração o browser bloqueia as chamadas identifiquei o erro no console do browser e pesquisei a solução.
+
 ## Evidências
 
 ### Controller
@@ -59,28 +61,40 @@ Temos que dentro do método da fila 'publicar(Long pedidoId)' temo 'System.out.p
 ## Testes unitários
 
 ### PedidoParser
-- String com 40 caracteres → campos parseados corretamente
-- String sem 40 caracteres exatos → exceção lançada
-- Quantidade fora do range 01-99 → exceção lançada
-<img width="692" height="183" alt="image" src="https://github.com/user-attachments/assets/2543909c-e837-4b0c-b002-a10aa5bfd9e8" />
+- String com 40 caracteres -> campos parseados corretamente
+- String nula -> exceção lançada
+- String sem 40 caracteres exatos (menor ou maior) -> exceção lançada
+- Quantidade fora do range 01-99 -> exceção lançada
+<img width="555" height="225" alt="image" src="https://github.com/user-attachments/assets/8f6fdf80-f0b4-44a8-b008-ed6886d428ad" />
 
 ### PedidoService
-- Cálculo com desconto (HAMBURGUER + CARNE + SALADA, 1 unid) → R$ 18,00
-- Cálculo sem desconto (PASTEL + FRANGO + BACON, 2 unid) → R$ 30,00
-- Status definido como RECEBIDO em ambos os casos
+- Cálculo com desconto (HAMBURGUER + CARNE + SALADA, 1 unid) -> R$ 18,00
+- Cálculo com desconto (HAMBURGUER + CARNE + SALADA, 2 unid) -> R$ 36,00
+- Cálculo sem desconto (PASTEL + FRANGO + BACON, 2 unid) -> R$ 30,00
+- Cálculo sem desconto (tipo 'Outros', 3 unid) -> R$ 36,00
+- Status definido como RECEBIDO em todos os casos
+- Verificação de que 'fila.publicar()' é chamado com o id correto após o save
 - Parser e repository isolados com Mockito para testar só a lógica do service
 - assertTrue com compareTo ao invés de assertEquals no valor para contornar o problema de casas decimais do BigDecimal
-<img width="1162" height="266" alt="image" src="https://github.com/user-attachments/assets/4c540fb8-c2d2-46fb-967a-e07c8a01cc9a" />
+<img width="747" height="300" alt="image" src="https://github.com/user-attachments/assets/50073c75-d741-4b12-a0aa-8630388114de" />
 
 ## Como rodar
 
+Acessar banco de dados:
 1. Roda a aplicação
 2. H2 Console: localhost:8080/h2-console
 3. JDBC URL: jdbc:h2:file:./pedidosdb
 
+Rodar aplicação
+1. Dentro da pasta modulo-a
+2. mvn spring-boot:run - roda a aplicação
+
+Rodar testes
+1. Dentro da pasta modulo-a
+2. mvn test - roda os testes
+
 ## Melhorias e refatorações planejadas
 
-- Validação da quantidade: Campo numérico deve rejeitar " 1" ou "1 "
 - Casas decimais do valor: retornar sempre com 2 casas decimais
 - PostgreSQL: migrar do H2 para PostgreSQL
 - Swagger: já trabalhei com Swagger anteriormente e seria interessante para automatizar a documentação e tests dos endpoints

@@ -65,4 +65,35 @@ class EntregaServiceTest {
                 service.buscarPorId(10L)
         );
     }
+
+    @Test
+    void deveRetornarTodosOsPedidos() {
+        // Simula dois pedidos no banco e verifica se ambos sao retornados
+        Pedido p1 = new Pedido();
+        p1.setId(1L);
+        Pedido p2 = new Pedido();
+        p2.setId(2L);
+
+        when(repository.findAll()).thenReturn(List.of(p1, p2));
+
+        List<Pedido> resultado = service.listarTodos();
+
+        assertEquals(2, resultado.size());
+        verify(repository, times(1)).findAll();
+    }
+
+    @Test
+    void deveRetornarPedidoPorIdQuandoEncontrado() {
+        // Simula pedido existente e verifica se e retornado corretamente
+        Pedido pedido = new Pedido();
+        pedido.setId(5L);
+        pedido.setStatus(StatusPedido.ENTREGUE);
+
+        when(repository.findById(5L)).thenReturn(Optional.of(pedido));
+
+        Pedido resultado = service.buscarPorId(5L);
+
+        assertEquals(5L, resultado.getId());
+        assertEquals(StatusPedido.ENTREGUE, resultado.getStatus());
+    }
 }

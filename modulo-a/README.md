@@ -84,5 +84,6 @@ Rodar testes
 ## Melhorias e refatorações planejadas
 
 - Casas decimais do valor: retornar sempre com 2 casas decimais
+- Autocompletar a string posicional conforme as regras do layout
 - Swagger: já trabalhei com Swagger anteriormente e seria interessante para automatizar a documentação e tests dos endpoints
 - Tratamento de erros global: Centralizar o tratamento de exceções ao invés de try/catch no controller

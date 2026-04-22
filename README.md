@@ -34,10 +34,11 @@ branch por feature -> commits incrementais -> PR com descrição -> merge na mai
 Analisei e pesquisei cuidadosamente o que não deveria ser enviado para o repo. Decidi, excepcionalmente, enviar o arquivo application.properties, mesmo que possa conter dados sensíveis como a senha do banco de dados, a fim de facilitar a execução do avaliador.
 
 ## Banco de dados
-Escolhi o PostgrSQL, por ser robusto, muito utilizado no mercado e adequado ao schema definido no desafio. Para a criação do MVP dos módulos, vou usar o H2, para facilitar a resolver o essencial, já que é mais simples configurar o H2.
+Escolhi o PostgrSQL, por ser robusto, muito utilizado no mercado e adequado ao schema definido no desafio. Para a criação do MVP dos módulos, usei o H2, para facilitar a resolver o essencial, já que é mais simples configurar e de visualizar. Mas depois do MVP estar pronto adicionei dockerizei o PostgreSQL para mais profissionalismo na entrega.
 
 ## Fila e mensageria
-Fui atrás de entender melhor sobre a mensageria no sistema, li um post sobre mensagens assíncronas no stackoverflow e vi um vídeo no youtube sobre mensageria em Spring Boot. Compreendi que o correto seria usar um Message Broker, foi ai que cheguei no RabbitMQ que é a solução padrão do ecossistema Spring. Para o MVP vou implementar um fila em memória que publica/consome, igual o RabbitMq teria. Posteriormente, refatorar para RabbitMQ, sendo uma solução mais profissional.
+Fui atrás de entender melhor sobre a mensageria no sistema, li um post sobre mensagens assíncronas no stackoverflow e vi um vídeo no youtube sobre mensageria em Spring Boot. Compreendi que o correto seria usar um Message Broker, foi ai que cheguei no RabbitMQ que é a solução padrão do ecossistema Spring.
+Para o MVP implementei uma fila em memória com a mesma interface (publicar/consumir) que o RabbitMQ teria, e o Módulo B simulava o listener com @Scheduled. Após o MVP funcionar, refatorei para RabbitMQ real, o Módulo A publica na fila do broker e o Módulo B consome com @RabbitListener, exatamente como o case pede.
 
 ---
 
@@ -79,8 +80,8 @@ Ao integrar o frontend Angular com os dois módulos, as chamadas HTTP falhavam n
 Fluxo completo funcionando:
 POST /pedidos/posicional -> Parser -> Service -> Banco -> Fila -> 201
 
-### Módulo B - concluíso
-Scheduler consome pedidos RECEBIDOS e atualiza para ENTREGUE.
+### Módulo B - concluído
+RabbitMQ consome mensagens da fila pedidos.recebidos e atualiza pedidos para ENTREGUE.
 GET /pedidos e GET /pedidos/{id} funcionando.
 
 ### Frontend - concluído
@@ -88,9 +89,10 @@ Tela Novo Pedido e tela Pedidos com filtro por status funcionando.
 
 ## Como rodar
 
-### Primeiro passo - PostgreSQL
-Subir banco de dados via docker, dentro da pasta raíz:
+### Primeiro passo - PostgreSQL e RabbitMQ
+Subir PostgreSQL e RabbitMQ via docker, dentro da pasta raíz:
 1. docker-compose up -d
+Painel do RabbitMQ disponível em localhost:15672 (guest/guest)
 
 ### Segundo passo - Módulo A
 
@@ -115,3 +117,9 @@ Dentro da pasta frontend
 Porta: 4200
 
 Ordem para rodar as aplicações: Módulo A -> Módulo B -> Frontend
+
+## Considerações finais
+
+Esse desafio me fez aprender muito na prática, desde conceitos de mensageria assíncrona até fluxo profissional de Git. Cada problema que encontrei virou aprendizado que documentei aqui.
+O código atual está funcional e cobre tudo que o case pede, mas sei que ainda há espaço para melhorar, tratamento de erros global, Swagger, casas decimais no valor e pretendo continuar evoluindo mesmo após a entrega, pois estou sempre buscando escrever código mais limpo e profissional.
+No fim das contas, quis sempre mostrar minha paixão por tecnologia e o motivo de eu ser a pessoa certa para a ANBIMA e estou muito ansioso para trabalhar com vocês!

@@ -40,6 +40,9 @@ Escolhi o PostgrSQL, por ser robusto, muito utilizado no mercado e adequado ao s
 Fui atrás de entender melhor sobre a mensageria no sistema, li um post sobre mensagens assíncronas no stackoverflow e vi um vídeo no youtube sobre mensageria em Spring Boot. Compreendi que o correto seria usar um Message Broker, foi ai que cheguei no RabbitMQ que é a solução padrão do ecossistema Spring.
 Para o MVP implementei uma fila em memória com a mesma interface (publicar/consumir) que o RabbitMQ teria, e o Módulo B simulava o listener com @Scheduled. Após o MVP funcionar, refatorei para RabbitMQ real, o Módulo A publica na fila do broker e o Módulo B consome com @RabbitListener, exatamente como o case pede.
 
+## Infraestrutura
+Usei Docker Compose na raiz do projeto para orquestrar PostgreSQL e RabbitMQ. Essa decisão foi pensada para facilitar a execução do avaliador, já que com um único docker-compose up -d sobe toda a infraestrutura necessária, sem dependências instaladas na máquina além do Docker.
+
 ---
 
 ## O que aprendi nesse desafio

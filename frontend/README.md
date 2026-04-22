@@ -34,3 +34,5 @@ npm install -> para instalar os pacotes
 ng serve -> para rodar a aplicação
 
 Acesse em http://localhost:4200. Os Módulos A (8080) e B (8081) precisam estar rodando.
+
+***Exemplo de string para o avaliador:*** HAMBURGUERCARNE     SALADA    01COCA    

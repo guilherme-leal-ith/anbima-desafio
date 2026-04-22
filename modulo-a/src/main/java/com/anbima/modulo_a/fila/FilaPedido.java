@@ -1,23 +1,22 @@
 package com.anbima.modulo_a.fila;
 
+import com.anbima.modulo_a.config.RabbitConfig;
+import lombok.RequiredArgsConstructor;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
-import java.util.LinkedList;
-import java.util.Queue;
 
-// E camada service, mas nao de negocio, logo optei por deixar fora do pacote service
 @Service
+@RequiredArgsConstructor
 public class FilaPedido {
-    // Fila FIFO dos ids
-    private final Queue<Long> fila = new LinkedList<>();
 
-    // Adiciona o Id do pedido na fila
+    private final RabbitTemplate rabbitTemplate;
+
+    // Publica o id do pedido na fila do RabbitMQ
     public void publicar(Long pedidoId) {
-        fila.add(pedidoId);
-        System.out.println("Publicado na fila: pedidoId=" + pedidoId);
-    }
+        String mensagem = "{\"pedidoId\": " + pedidoId + "}";
 
-    // Remove e retorna o primeiro elemento da fila (FIFO)
-    public Long consumir() {
-        return fila.poll();
+        rabbitTemplate.convertAndSend(RabbitConfig.FILA_PEDIDOS, mensagem);
+
+        System.out.println("Publicado na fila: pedidoId=" + pedidoId);
     }
 }

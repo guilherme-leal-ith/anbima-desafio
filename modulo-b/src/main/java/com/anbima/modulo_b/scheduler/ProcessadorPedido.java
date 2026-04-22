@@ -1,8 +1,9 @@
 package com.anbima.modulo_b.scheduler;
 
+import com.anbima.modulo_b.config.RabbitConfig;
 import com.anbima.modulo_b.service.EntregaService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -11,10 +12,11 @@ public class ProcessadorPedido {
 
     private final EntregaService entregaService;
 
-    // Executa a cada 3 segundos simulando o @RabbitListener da fila pedidos.recebidos
-    // Em producao seria substituido por @RabbitListener(queues = "pedidos.recebidos")
-    @Scheduled(fixedDelay = 3000)
-    public void processar() {
-        entregaService.processarPedidosRecebidos();
+    // Substitui o @Scheduled — agora consome a fila real do RabbitMQ
+    @RabbitListener(queues = RabbitConfig.FILA_PEDIDOS)
+    public void processar(String mensagem) {
+        // Extrai o pedidoId do JSON {"pedidoId": 1}
+        Long pedidoId = Long.parseLong(mensagem.replaceAll("[^0-9]", ""));
+        entregaService.processarPorId(pedidoId);
     }
 }

@@ -34,17 +34,9 @@ Expondo endpoint do recebimento do pedido
 Migrado do H2 para PostgreSQL. O banco sobe via Docker Compose na raiz do projeto.
 A tabela é criada automaticamente pelo Hibernate via ddl-auto=update.
 
-### Fila em memória
-Ao estudar o case identifiquei que a comunicação entre os módulos precisava ser assíncrona, em outras palavras: o Módulo A não deveria esperar o Módulo B processar para retornar a resposta. Pesquisei sobre esse padrão e cheguei no conceito de message broker, e dentro do  Spring o RabbitMQ via Spring AMQP é a solução padrão.
-
-Com isso em vista, para o MVP optei por implementar uma fila em memória com a mesma funcionalidade (publicar/consumir) que o RabbitMQ teria. Essa decisão foi consciente por dois motivos:
-1. Permitiu criar o fluxo completo sem dependência de infraestrutura externa
-2. A classe FilaPedido está isolada em pacote próprio, a troca por RabbitMQ não afeta o PedidoService, só a implementação da fila, já que quis criar um código limpo.
-
-Porém identifiquei um problema: o Módulo A e o Módulo B são processos separados, assim a fila em memória, do Módulo A não é 
-acessível pelo Módulo B. Tendo em vista que com RabbitMQ isso seria resolvido naturalmente, já que o Modulo A publicaria na fila do broker e o Módulo B consumiria com o Listener, resolvi que para o MVP o Módulo B iria consultar o banco periodicamente com @Scheduled, buscando
-pedidos com status = RECEBIDO e os atualizando para ENTREGUE, descobri como fazer essa solução através do post do StackOverflow:
-Como agendar várias tarefas no spring boot de forma dinamica?
+### Fila e mensageria
+Para o MVP implementei uma fila em memória (com LinkedList) com a mesma interface que o RabbitMQ teria, a de publicar o pedidoId após salvar. Essa decisão foi consciente: permitiu criar o fluxo completo sem dependência de uma infraestrutura externa, e a classe FilaPedido ficou isolada em pacote próprio para que a troca não afetasse o PedidoService.
+Após o MVP funcionando, refatorei FilaPedido para usar RabbitTemplate, publicando o pedidoId como JSON na fila 'pedidos.recebidos' do RabbitMQ. O PedidoService não precisou ser alterado, já que só a implementação da fila mudou, validando a decisão de isolamento.
 
 ### CORS
 Configurei o CorsConfig para permitir requisições do frontend (localhost:4200). Sem essa configuração o browser bloqueia as chamadas identifiquei o erro no console do browser e pesquisei a solução.

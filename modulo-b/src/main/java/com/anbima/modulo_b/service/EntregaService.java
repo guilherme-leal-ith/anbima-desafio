@@ -26,6 +26,15 @@ public class EntregaService {
         }
     }
 
+    // Busca o pedido pelo id recebido da fila e atualiza para ENTREGUE
+    public void processarPorId(Long pedidoId) {
+        Pedido pedido = repository.findById(pedidoId)
+                .orElseThrow(() -> new RuntimeException("Pedido não encontrado: " + pedidoId));
+        pedido.setStatus(StatusPedido.ENTREGUE);
+        repository.save(pedido);
+        System.out.println("Pedido " + pedidoId + " atualizado para ENTREGUE");
+    }
+
     // Consulta todos pedidos da fila
     public List<Pedido> listarTodos() {
         return repository.findAll();

@@ -77,7 +77,7 @@ Ao integrar o frontend Angular com os dois módulos, as chamadas HTTP falhavam n
 
 ### Módulo A - concluído
 Fluxo completo funcionando:
-POST /pedidos/posicional → Parser → Service → Banco → Fila → 201
+POST /pedidos/posicional -> Parser -> Service -> Banco -> Fila -> 201
 
 ### Módulo B - concluíso
 Scheduler consome pedidos RECEBIDOS e atualiza para ENTREGUE.
@@ -91,22 +91,22 @@ Tela Novo Pedido e tela Pedidos com filtro por status funcionando.
 ### Módulo A
 
 Dentro da pasta modulo-a
-mvn spring-boot:run - roda a aplicação
+- mvn spring-boot:run - roda a aplicação
 
 Porta: 8080
 
 ### Módulo B
 
 Dentro da pasta modulo-b
-mvn spring-boot:run - roda a aplicação
+- mvn spring-boot:run - roda a aplicação
 
 Porta: 8081
 
 ### Frontend
 
 Dentro da pasta frontend
-npm install - baixa os pacotes
-ng serve - roda a aplicação
+- npm install - baixa os pacotes
+- ng serve - roda a aplicação
 
 Porta: 4200
 
